@@ -32,6 +32,14 @@ class clientesRepository {
         return rows[0];
     }
 
+        async listarReservas (id) {
+        const { rows } = await pool.query(
+            "SELECT r.id, r.data, r.hora, r.cliente_id, FROM reservas r JOIN clientes c ON r.cliente_id = c.id WHERE c.id = $1",
+            [id]
+        );
+        return rows;
+    }
+
     async deletar (id) {
         await pool.query("DELETE FROM clientes WHERE id = $1", [id]);
     }

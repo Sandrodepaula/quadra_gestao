@@ -19,6 +19,10 @@ router.put ("/clientes/:id", (req, res, next) => {
     clientesController.atualizar(req, res, next);
 });
 
+router.get ("/clientes/:id/reservas", (req, res, next) => {
+    clientesController.listarReservas(req, res, next);
+});
+
 router.delete ("/clientes/:id", (req, res, next) => {
     clientesController.deletar(req, res, next);
 });

@@ -25,7 +25,12 @@ class clientesService {
         await this.buscar(id); // Verifica se o cliente existe antes de atualizar
         return await clientesRepository.atualizar(id, dados);
     }
-
+    
+    async listarReservas (id) {
+        await this.buscar(id); // Verifica se o cliente existe antes de listar as reservas
+        return await clientesRepository.listarReservas(id);
+    }   
+    
     async deletar (id) {
         await this.buscar(id); // Verifica se o cliente existe antes de deletar
         return await clientesRepository.deletar(id);

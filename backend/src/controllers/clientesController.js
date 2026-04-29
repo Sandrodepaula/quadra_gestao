@@ -1,4 +1,6 @@
 
+const clientesService = require('../services/clientesService');
+
 class clientesController {
     async listar (req, res, next) {
         try {
@@ -33,6 +35,16 @@ class clientesController {
             const { id } = req.params;
             const atualizado = await clientesService.atualizar(id, req.body);
             res.status(200).json(atualizado);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async listarReservas (req, res, next) {
+        try {
+            const { id } = req.params;
+            const reservas = await clientesService.listarReservas(id);
+            res.status(200).json(reservas);
         } catch (err) {
             next(err);
         }
