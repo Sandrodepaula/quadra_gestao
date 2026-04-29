@@ -5,5 +5,10 @@ const router = express.Router();
 
 router.use('/clientes', require('./clientesRouters'));
 router.use('/reservas', require('./reservasRouters'));
+router.use('/quadras', require('./quadrasRouters'));
+router.use('/pagamentos', require('./pagamentosRouters'));
+router.use('/bloqueios', require('./bloqueiosRouters'));
+router.use('/relatorios', require('./relatoriosRouters'));
+router.use('/disponibilidade', require('./disponibilidadeRouters'));
 
 module.exports = router;

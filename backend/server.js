@@ -4,11 +4,18 @@
 // aplicação só inicie após uma conexão bem-sucedida com o banco.
 
 const app = require("./src/app");
-
+const { pool } = require("./src/config/database");
 
 const port = 3000;
 
-
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+pool.connect()
+  .then(() => {
+    console.log("Banco conectado.");
+    app.listen(port, () => {
+      console.log(`Servidor rodando na porta ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Erro ao conectar com o banco de dados:", err);
+    process.exit(1);// Encerra a aplicação se não conseguir conectar ao banco
+  });
