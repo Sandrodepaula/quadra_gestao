@@ -13,7 +13,7 @@ class clientesController {
 
     async buscar (req, res, next) {
         try {
-            const { id } = req.params;
+            const { id } = req.params;// Extrai o ID dos parâmetros da URL
             const dados = await clientesService.buscar(id);
             res.status(200).json(dados);    
         } catch (err) {

@@ -1,7 +1,7 @@
 
 const { Router } = require("express");
 const router = Router();
-const clientesController = require("../controllers/reservasController");
+const reservasController = require("../controllers/reservasController");
 
 router.get ("/", (req, res, next) => {
     reservasController.listar(req, res, next);
