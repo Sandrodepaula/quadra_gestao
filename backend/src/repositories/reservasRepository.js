@@ -4,7 +4,12 @@ const { pool } = require("../config/database");
 class reservasRepository {
 
     async listar (){
-        const { rows} = await pool.query("SELECT * FROM reservas");
+        const { rows} = await pool.query(
+            // Verificar se há reservas conflitantes para a mesma quadra, data e horário
+            `SELECT * FROM reservas 
+            WHERE quadraId = ? AND data = ? AND hora_inicio < :hora_fim AND hora_fim > :hora_inicio`,
+            [quadraId, data, hora_inicio, hora_fim]
+        );
         return rows;
     };
 
