@@ -24,9 +24,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
 function Reservas() {
     return (
-        <div className="reservas-page">
+        <div className="reservas-page"> 
  {/* Content */}
-        <main className="content">
+        <main className="content"> 
           <div className="content-header">
             <div>
               <div className="breadcrumb">Painel de Controle / Gestão de Reservas</div>
