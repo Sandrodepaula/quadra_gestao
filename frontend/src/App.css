@@ -243,7 +243,243 @@
   color: var(--primary);
 }
 
-/* ===== Tabelas ===== */
+/* ===== Tela Clientes ===== */
+.clientes-page {
+  min-height: calc(100vh - 0px);
+  background-color: #eef2ef;
+  padding: 24px 20px;
+}
+
+.card-layout {
+  max-width: 1160px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+}
+
+.content-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.title-group h1 {
+  font-size: 2rem;
+  color: #1e3630;
+  font-weight: 700;
+}
+
+.actions-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  min-width: 280px;
+  max-width: 440px;
+  width: 100%;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #dbe4df;
+  border-radius: 12px;
+  background-color: #f8faf9;
+  color: #34423a;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-container input::placeholder {
+  color: #9ca89e;
+}
+
+.search-container input:focus {
+  border-color: #84b39d;
+  box-shadow: 0 0 0 4px rgba(132, 179, 157, 0.12);
+}
+
+.btn-new-client {
+  background-color: #0f8a42 !important;
+  border-color: #0f8a42 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 18px rgba(15, 138, 66, 0.18);
+}
+
+.btn-new-client:hover,
+.btn-new-client:focus {
+  background-color: #117a3d !important;
+  border-color: #117a3d !important;
+}
+
+.table-card {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #e1e9e3;
+}
+
+.clientes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  min-width: 640px;
+}
+
+.clientes-table thead {
+  background-color: #f6fbf8;
+}
+
+.clientes-table th,
+.clientes-table td {
+  padding: 20px 18px;
+  text-align: left;
+  color: #3e4c44;
+}
+
+.clientes-table th {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #5b6a63;
+  border-bottom: 1px solid #e7efe9;
+}
+
+.clientes-table tbody tr {
+  background-color: #ffffff;
+}
+
+.clientes-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid #f0f5f0;
+}
+
+.clientes-table tbody tr:hover {
+  background-color: #f8fdf8;
+}
+
+.clientes-table td {
+  vertical-align: middle;
+}
+
+.clientes-table td + td {
+  color: #6d7a71;
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 6px 12px;
+}
+
+.edit-button {
+  color: #0f6cba;
+  border-color: #b7d8f3;
+}
+
+.edit-button:hover {
+  background-color: #eef7ff;
+  color: #0f6cba;
+}
+
+.delete-button {
+  color: #c43d3d;
+  border-color: #f2c2c2;
+}
+
+.delete-button:hover {
+  background-color: #fff1f1;
+  color: #c43d3d;
+}
+
+.save-button {
+  background-color: #0f8a42;
+  border-color: #0f8a42;
+  color: #ffffff;
+}
+
+.save-button:hover {
+  background-color: #117a3d;
+  border-color: #117a3d;
+  color: #ffffff;
+}
+
+.table-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #dbe4df;
+  border-radius: 8px;
+  background-color: #f8faf9;
+  color: #34423a;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding-top: 18px;
+  margin-top: 14px;
+  border-top: 1px solid #e5ebe5;
+  font-size: 0.95rem;
+  color: #6b796e;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-button {
+  min-width: 38px;
+  height: 38px;
+  border: 1px solid #d7e1db;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #4a5a50;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-button:hover {
+  border-color: #9db5a8;
+  background-color: #f4faf5;
+}
+
+.page-button.active {
+  background-color: #0f8a42;
+  border-color: #0f8a42;
+  color: #ffffff;
+}
+
+.page-button.dots {
+  cursor: default;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+/* ===== Reservas/Tabelas Existentes ===== */
 .reservations-table {
   width: 100%;
   border-collapse: collapse;
