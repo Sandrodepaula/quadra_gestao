@@ -1,15 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
+import { Cliente } from '../types';
 
-interface Cliente {
-    id: number;
-    nome: string;
-    telefone: string;
-    email: string;
-}
 
 function Clientes() {
+    const navigate = useNavigate();
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [editandoId, setEditandoId] = useState<number | null>(null);
@@ -71,6 +68,10 @@ function Clientes() {
         }
     };
 
+    const handleNovoCliente = () => {
+        navigate('/clientes/novo');
+    };
+
     return (
         <div className="clientes-page">
             <main className="content card-layout">
@@ -88,9 +89,12 @@ function Clientes() {
                                 aria-label="Buscar clientes"
                             />
                         </div>
-                        <Button className="btn-new-client" variant="success">
-                            + Novo cliente
-                        </Button>
+
+                             <Button className='btn newclient'
+                             onClick={handleNovoCliente}>+ Novo cliente
+                             </Button>
+                        
+
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@ import './App.css';
 import Clientes from './pages/Clientes';
 import Calendario from './pages/Calendario';
 import Reservas from './pages/Reservas';
+import NovoCliente from './pages/NovoCliente';
 
 // === Componente Principal ===
 
@@ -75,6 +76,7 @@ function App() {
             <Route path="/reservas" element={<Reservas />}/>
             <Route path="/calendario" element={<Calendario />} />
             <Route path="/clientes" element={<Clientes />} />
+            <Route path="/clientes/novo" element={<NovoCliente />} />
             <Route path="/relatorios" element={<div><h1>Relatórios</h1></div>} />
           </Routes>
         </div>
