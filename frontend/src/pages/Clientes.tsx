@@ -90,9 +90,9 @@ function Clientes() {
                             />
                         </div>
 
-                             <Button className='btn newclient'
-                             onClick={handleNovoCliente}>+ Novo cliente
-                             </Button>
+                            <Button className='btn-new-client'
+                                onClick={handleNovoCliente}>+ Novo cliente
+                            </Button>
                         
 
                     </div>

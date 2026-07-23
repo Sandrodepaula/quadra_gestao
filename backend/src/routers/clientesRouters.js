@@ -12,7 +12,7 @@ router.get ("/:id", (req, res, next) => {
     clientesController.buscar(req, res, next);
 });
 
-router.post ("/", (req, res, next) => {
+router.post ("/novo", (req, res, next) => {
     clientesController.criar (req, res, next);
     
 });
