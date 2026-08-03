@@ -5,3 +5,11 @@ export interface Cliente {
     email: string;
 }
 
+export interface Reserva {
+    id: number;
+    hora: string;
+    quadra: string;
+    cliente: string;
+    esporte: string;
+    status: string;
+}
