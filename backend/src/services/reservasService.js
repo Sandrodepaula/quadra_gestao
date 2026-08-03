@@ -1,4 +1,4 @@
-const clientesRepository = require("../repositories/reservasRepository");
+const reservasRepository = require("../repositories/reservasRepository");
 
 class reservasService {
     async listar (){
@@ -14,7 +14,7 @@ class reservasService {
     }
 
     async criar (dados) {
-        if (!dados.clienteId || !dados.quadraId || !dados.data || !dados.hora_inicio || !dados.hora_fim) {
+        if (!dados.clienteId || !dados.id || !dados.data || !dados.hora_inicio || !dados.hora_fim) {
 
             throw new Error("Dados incompletos");
         }

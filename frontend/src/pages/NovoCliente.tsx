@@ -16,8 +16,10 @@ function NovoCliente() {
       email: cliente.email,
       telefone: cliente.telefone
     });
+
+    
     const telefoneCadastrado = clientes.some(cliente => cliente.telefone !== formCliente.telefone); 
-    if (!telefoneCadastrado) {
+    if (telefoneCadastrado) {
       alert('Telefone já cadastrado. Por favor, insira um telefone diferente.');
       return;
     }

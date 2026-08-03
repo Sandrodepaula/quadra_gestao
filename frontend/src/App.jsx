@@ -32,7 +32,7 @@ function App() {
             <Link to="/" className="sidebar-item">
               <span className="sidebar-icon">🏠</span> Home
             </Link>
-            <Link to="/dashboard" className="sidebar-item active">
+            <Link to="/dashboard" className="sidebar-item">
               <span className="sidebar-icon">📊</span> Dashboard
             </Link>
             <Link to="/reservas" className="sidebar-item">
