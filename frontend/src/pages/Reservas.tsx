@@ -1,14 +1,9 @@
 import React from 'react';
-
- 
- 
- // === Dados Fictícios ===
-const reservations = [
-  { time: '16:00 - 17:00', quadra: 'Quadra 1', cliente: 'Carlos Silva', esporte: 'Futsal', status: 'Confirmado' },
-  { time: '17:00 - 18:00', quadra: 'Quadra 2', cliente: 'Ana Souza', esporte: 'Tênis', status: 'Pendente' },
-  { time: '18:00 - 19:00', quadra: 'Quadra 1', cliente: 'Carlos Silva', esporte: 'Futsal', status: 'Confirmado' },
-  { time: '18:00 - 19:00', quadra: 'Quadra 2', cliente: 'Roctuelle', esporte: 'Tênis', status: 'Confirmado' },
-];
+import Button from 'react-bootstrap/Button';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { api } from '../services/api';
+import { Reserva } from '../types';
 
 // === Componentes Auxiliares ===
 
@@ -23,6 +18,53 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
 
 function Reservas() {
+  const [reservas, setReservas] = useState<Reserva[]>([]);
+  const [carregando, setCarregando] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  const dataHoje = new Date().toLocaleDateString('pt-BR');
+  const diaSemana = new Date().toLocaleDateString('pt-BR', {weekday: 'long'});
+
+  const normalizarStatus = (status?: string) => {
+    if (!status) return 'Pendente';
+
+    const statusNormalizado = status.toLowerCase();
+    if (statusNormalizado === 'confirmado' || statusNormalizado === 'confirmada') {
+      return 'Confirmado';
+    }
+
+    if (statusNormalizado === 'cancelado' || statusNormalizado === 'cancelada') {
+      return 'Cancelado';
+    }
+
+    return 'Pendente';
+  };
+
+  useEffect(() => {
+    async function carregarReservas() {
+      try {
+        const response = await api.get<any[]>('/reservas');
+        const reservasMapeadas = (response.data || []).map((reserva: any) => ({
+          id: reserva.id,
+          hora: reserva.hora_inicio || reserva.hora || '—',
+          quadra: reserva.quadra_id ? `Quadra ${reserva.quadra_id}` : 'Não informada',
+          cliente: reserva.cliente_id ? `Cliente ${reserva.cliente_id}` : 'Não informado',
+          esporte: reserva.esporte || 'Não informado',
+          status: normalizarStatus(reserva.status),
+        }));
+
+        setReservas(reservasMapeadas);
+      } catch (error) {
+        console.error("Erro ao buscar reservas:", error);
+        setReservas([]);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarReservas();
+  }, []);
+
     return (
         <div className="reservas-page"> 
  {/* Content */}
@@ -40,11 +82,11 @@ function Reservas() {
             <div className="card-header">
               <div>
                 <div className="card-title">Reservas de Hoje</div>
-                <div className="card-subtitle">Quarta-feira, 25 Out 2023</div>
+                <div className="card-subtitle">{dataHoje}</div>
               </div>
               <div className="date-switcher">
-                <span>Quarta-feira</span>
                 <span className="date-arrow">{'<'}</span>
+                <span>{diaSemana}</span>
                 <span className="date-arrow">{'>'}</span>
               </div>
             </div>
@@ -59,15 +101,30 @@ function Reservas() {
                 </tr>
               </thead>
               <tbody>
-                {reservations.map((reservation, index) => (
-                  <tr key={index} className="table-row">
-                    <td className="table-cell">{reservation.time}</td>
-                    <td className="table-cell"><div className="quadra-badge">{reservation.quadra}</div></td>
-                    <td className="table-cell">{reservation.cliente}</td>
-                    <td className="table-cell">{reservation.esporte}</td>
-                    <td className="table-cell"><StatusBadge status={reservation.status} /></td>
+                {carregando ? (
+
+                  <tr>
+                    <td colSpan={4}>Carregando reservas...</td>
                   </tr>
-                ))}
+                ) : reservas.length === 0 ? (
+                                <tr>
+                                    <td colSpan={4}>Nenhuma reserva encontrada.</td>
+                                </tr>
+                            ) : (
+                                reservas.map((reserva) => (
+                                  <tr key={reserva.id} className="table-row">
+                                    <td className="table-cell">
+                                      <div className="time-badge">{reserva.hora}</div>
+                                    </td>
+                                    <td className="table-cell">
+                                      <div className="quadra-badge">{reserva.quadra}</div>
+                                    </td>
+                                    <td className="table-cell">{reserva.cliente}</td>
+                                    <td className="table-cell">{reserva.esporte}</td>
+                                    <td className="table-cell"><StatusBadge status={reserva.status} /></td>
+                                  </tr>
+                                ))
+                              )}
               </tbody>
             </table>
           </div>
