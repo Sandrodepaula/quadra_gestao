@@ -2,3 +2,5 @@ Site para estilizição de componentes
 
 https://react-bootstrap.netlify.app/
 
+03/08/2026
+Tentando colocar o nome do cliente no canto Cliente em Reservas

@@ -1,5 +1,5 @@
 
-const clientesService = require('../services/reservasService');
+const reservasService = require('../services/reservasService');
 
 class reservasController {
     async listar (req, res, next) {

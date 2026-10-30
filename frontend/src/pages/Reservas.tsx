@@ -3,10 +3,10 @@ import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { Reserva } from '../types';
+import { Reserva, Cliente } from '../types';
 
 // === Componentes Auxiliares ===
-
+// Componente para exibir o status da reserva com cores diferentes
 type StatusBadgeProps = {
   status: string;
 };
@@ -20,24 +20,39 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 function Reservas() {
   const [reservas, setReservas] = useState<Reserva[]>([]);
   const [carregando, setCarregando] = useState<boolean>(true);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const navigate = useNavigate();
 
   const dataHoje = new Date().toLocaleDateString('pt-BR');
   const diaSemana = new Date().toLocaleDateString('pt-BR', {weekday: 'long'});
 
+  // Função para normalizar o status da reserva
   const normalizarStatus = (status?: string) => {
     if (!status) return 'Pendente';
-
     const statusNormalizado = status.toLowerCase();
     if (statusNormalizado === 'confirmado' || statusNormalizado === 'confirmada') {
       return 'Confirmado';
     }
-
     if (statusNormalizado === 'cancelado' || statusNormalizado === 'cancelada') {
       return 'Cancelado';
     }
-
     return 'Pendente';
+  };
+
+  // === Função para buscar clientes ===
+  const buscarClientes = async () => {
+    try {
+      const response = await api.get<Cliente[]>('/clientes');
+      const clientesMapeados = (response.data || []).map((cliente: any) => ({
+        id: cliente.id,
+        nome: cliente.nome || 'Não informado',
+        telefone: cliente.telefone || 'Não informado',
+        email: cliente.email || 'Não informado',
+      }));
+      setClientes(clientesMapeados);
+    } catch (error) {
+      console.error("Erro ao buscar clientes:", error);
+    }
   };
 
   useEffect(() => {
@@ -46,9 +61,9 @@ function Reservas() {
         const response = await api.get<any[]>('/reservas');
         const reservasMapeadas = (response.data || []).map((reserva: any) => ({
           id: reserva.id,
-          hora: reserva.hora_inicio || reserva.hora || '—',
+          hora: reserva.hora_inicio || reserva.hora || '—',// Verifica se hora_inicio existe, caso contrário, utiliza hora ou '—' como fallback
           quadra: reserva.quadra_id ? `Quadra ${reserva.quadra_id}` : 'Não informada',
-          cliente: reserva.cliente_id ? `Cliente ${reserva.cliente_id}` : 'Não informado',
+          cliente: reserva.cliente_id ? (clientes.find((c) => c.id === reserva.cliente_id)?.nome || 'Cliente não encontrado'): 'Não informado',
           esporte: reserva.esporte || 'Não informado',
           status: normalizarStatus(reserva.status),
         }));
@@ -63,6 +78,10 @@ function Reservas() {
     }
 
     carregarReservas();
+  }, []);
+
+  useEffect(() => {
+    buscarClientes();
   }, []);
 
     return (
@@ -119,7 +138,9 @@ function Reservas() {
                                     <td className="table-cell">
                                       <div className="quadra-badge">{reserva.quadra}</div>
                                     </td>
-                                    <td className="table-cell">{reserva.cliente}</td>
+                                    <td className="table-cell">
+                                      {reserva.cliente}
+                                    </td>
                                     <td className="table-cell">{reserva.esporte}</td>
                                     <td className="table-cell"><StatusBadge status={reserva.status} /></td>
                                   </tr>

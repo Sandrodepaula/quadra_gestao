@@ -5,7 +5,7 @@ class reservasRepository {
 
     async listar() {
         const { rows } = await pool.query(
-            `SELECT * FROM reservas ORDER BY data ASC, hora_inicio ASC`
+            `SELECT * FROM reservas ORDER BY data ASC, hora_inicio ASC` //Mostra as reservas ordenadas por data e hora de início, do mais antigo para o mais recente
         );
         return rows;
     }
