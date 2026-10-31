@@ -17,10 +17,10 @@ class reservasRepository {
 
 
     async criar (dados) {
-        const { id, clienteId, data, hora_inicio, hora_fim } = dados;
+        const { clienteId, data, hora_inicio, hora_fim, valor } = dados;
         const { rows } = await pool.query(
-            "INSERT INTO reservas (id, cliente_id, data, hora_inicio, hora_fim) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-            [id, clienteId, data, hora_inicio, hora_fim]
+            "INSERT INTO reservas (cliente_id, data, hora_inicio, hora_fim, valor) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [clienteId, data, hora_inicio, hora_fim, valor]
         );
         return rows[0];
     }

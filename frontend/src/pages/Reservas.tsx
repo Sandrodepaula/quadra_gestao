@@ -1,26 +1,32 @@
-import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { Reserva, Cliente } from '../types';
 
-// === Componentes Auxiliares ===
-// Componente para exibir o status da reserva com cores diferentes
 type StatusBadgeProps = {
   status: string;
 };
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+const StatusBadge = ({ status }: StatusBadgeProps) => {
   const statusClass = status === 'Confirmado' ? 'confirmado' : 'pendente';
   return <div className={`status-badge ${statusClass}`}>{status}</div>;
 };
 
+type ReservaApi = {
+  id: number;
+  hora_inicio?: string;
+  hora?: string;
+  quadra_id?: number;
+  cliente_id?: number;
+  esporte?: string;
+  status?: string;
+};
 
 function Reservas() {
   const [reservas, setReservas] = useState<Reserva[]>([]);
   const [carregando, setCarregando] = useState<boolean>(true);
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [erro, setErro] = useState('');
   const navigate = useNavigate();
 
   const dataHoje = new Date().toLocaleDateString('pt-BR');
@@ -39,31 +45,20 @@ function Reservas() {
     return 'Pendente';
   };
 
-  // === Função para buscar clientes ===
-  const buscarClientes = async () => {
-    try {
-      const response = await api.get<Cliente[]>('/clientes');
-      const clientesMapeados = (response.data || []).map((cliente: any) => ({
-        id: cliente.id,
-        nome: cliente.nome || 'Não informado',
-        telefone: cliente.telefone || 'Não informado',
-        email: cliente.email || 'Não informado',
-      }));
-      setClientes(clientesMapeados);
-    } catch (error) {
-      console.error("Erro ao buscar clientes:", error);
-    }
-  };
-
   useEffect(() => {
     async function carregarReservas() {
       try {
-        const response = await api.get<any[]>('/reservas');
-        const reservasMapeadas = (response.data || []).map((reserva: any) => ({
+        const [reservasResponse, clientesResponse] = await Promise.all([
+          api.get<ReservaApi[]>('/reservas'),
+          api.get<Cliente[]>('/clientes'),
+        ]);
+        const reservasMapeadas = reservasResponse.data.map((reserva) => ({
           id: reserva.id,
           hora: reserva.hora_inicio || reserva.hora || '—',// Verifica se hora_inicio existe, caso contrário, utiliza hora ou '—' como fallback
           quadra: reserva.quadra_id ? `Quadra ${reserva.quadra_id}` : 'Não informada',
-          cliente: reserva.cliente_id ? (clientes.find((c) => c.id === reserva.cliente_id)?.nome || 'Cliente não encontrado'): 'Não informado',
+          cliente: reserva.cliente_id
+            ? clientesResponse.data.find((cliente) => cliente.id === reserva.cliente_id)?.nome || 'Cliente não encontrado'
+            : 'Não informado',
           esporte: reserva.esporte || 'Não informado',
           status: normalizarStatus(reserva.status),
         }));
@@ -71,17 +66,13 @@ function Reservas() {
         setReservas(reservasMapeadas);
       } catch (error) {
         console.error("Erro ao buscar reservas:", error);
-        setReservas([]);
+        setErro('Não foi possível carregar as reservas.');
       } finally {
         setCarregando(false);
       }
     }
 
     carregarReservas();
-  }, []);
-
-  useEffect(() => {
-    buscarClientes();
   }, []);
 
     return (
@@ -93,7 +84,9 @@ function Reservas() {
               <div className="breadcrumb">Painel de Controle / Gestão de Reservas</div>
               <div className="page-title">Painel de Controle / Gestão de Reservas</div>
             </div>
-            <button className="add-button">+ Nova Reserva</button>
+            <Button className="add-button" onClick={() => navigate('/reservas/nova')}>
+              + Nova Reserva
+            </Button>
           </div>
 
           {/* Reservas de Hoje */}
@@ -123,11 +116,15 @@ function Reservas() {
                 {carregando ? (
 
                   <tr>
-                    <td colSpan={4}>Carregando reservas...</td>
+                    <td colSpan={5}>Carregando reservas...</td>
+                  </tr>
+                ) : erro ? (
+                  <tr>
+                    <td colSpan={5}>{erro}</td>
                   </tr>
                 ) : reservas.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4}>Nenhuma reserva encontrada.</td>
+                                    <td colSpan={5}>Nenhuma reserva encontrada.</td>
                                 </tr>
                             ) : (
                                 reservas.map((reserva) => (

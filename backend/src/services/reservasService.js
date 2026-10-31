@@ -14,9 +14,13 @@ class reservasService {
     }
 
     async criar (dados) {
-        if (!dados.clienteId || !dados.id || !dados.data || !dados.hora_inicio || !dados.hora_fim) {
+        if (!dados.clienteId || !dados.data || !dados.hora_inicio || !dados.hora_fim || dados.valor === undefined || dados.valor === null || dados.valor === "") {
 
             throw new Error("Dados incompletos");
+        }
+
+        if (!Number.isFinite(Number(dados.valor)) || Number(dados.valor) < 0) {
+            throw new Error("Valor da reserva inválido");
         }
 
         return await reservasRepository.criar(dados);

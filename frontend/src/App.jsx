@@ -1,9 +1,9 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import Clientes from './pages/Clientes';
 import Calendario from './pages/Calendario';
 import Reservas from './pages/Reservas';
+import NovaReserva from './pages/NovaReserva';
 import NovoCliente from './pages/NovoCliente';
 
 // === Componente Principal ===
@@ -74,6 +74,7 @@ function App() {
             <Route path="/" element={<div><h1>Home</h1></div>} />
             <Route path="/dashboard" element={<div><h1>Dashboard</h1></div>} />
             <Route path="/reservas" element={<Reservas />}/>
+            <Route path="/reservas/nova" element={<NovaReserva />} />
             <Route path="/calendario" element={<Calendario />} />
             <Route path="/clientes" element={<Clientes />} />
             <Route path="/clientes/novo" element={<NovoCliente />} />
