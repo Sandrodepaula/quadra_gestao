@@ -2,15 +2,15 @@
 
 const express = require("express");
 const cors = require("cors");
-const app = express();
-const clienteRoutes = require("./routers/index");
-const reservasRoutes = require("./routers/index");
 
+
+const routers = require("./routers");
+
+const app = express();
 
 
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", clienteRoutes);
-app.use("/api", reservasRoutes);
+app.use("/api", routers);
 module.exports = app;

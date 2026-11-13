@@ -3,7 +3,7 @@
 const express = require('express');
 const { Router } = express;
 const router = Router();
-
+router.use('/auth', require('./authRouters'));
 router.use('/clientes', require('./clientesRouters'));
 router.use('/reservas', require('./reservasRouters'));
 router.use('/quadras', require('./quadrasRouters'));

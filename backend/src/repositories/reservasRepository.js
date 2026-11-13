@@ -25,11 +25,18 @@ class reservasRepository {
         return rows[0];
     }
 
-    async atualizar ( dados) {
-        const { id, clienteId, data, hora_inicio, hora_fim } = dados;
+    async atualizar ( id, dados) {
+        const { clienteId, data, hora_inicio, hora_fim, valor } = dados;
         const { rows } = await pool.query(
-            "UPDATE reservas SET id = $1, cliente_id = $2, data = $3, hora_inicio = $4, hora_fim = $5 WHERE id = $6 RETURNING *",
-            [id, clienteId, data, hora_inicio, hora_fim]
+            `UPDATE reservas 
+            SET cliente_id = $1,
+                data = $2, 
+                hora_inicio = $3, 
+                hora_fim = $4,
+                valor = $5                
+                WHERE id = $6 
+                RETURNING *`,
+            [clienteId, data, hora_inicio, hora_fim, valor, id]
         );
         return rows[0];
     }

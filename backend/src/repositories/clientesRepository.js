@@ -34,7 +34,14 @@ class clientesRepository {
 
         async listarReservas (id) {
         const { rows } = await pool.query(
-            "SELECT r.id, r.data, r.hora, r.cliente_id, FROM reservas r JOIN clientes c ON r.cliente_id = c.id WHERE c.id = $1",
+            `SELECT r.id, 
+                    r.data, 
+                    r.hora_inicio, 
+                    r.hora_fim, 
+                    r.valor 
+            FROM reservas r 
+            JOIN clientes c ON r.cliente_id = c.id 
+            WHERE c.id = $1`,
             [id]
         );
         return rows;
