@@ -1,23 +1,24 @@
 # Quadra Gestão
 
-Sistema de gestão para quadras esportivas, desenvolvido com backend em Node.js/Express e frontend em React + Vite. O projeto permite controlar clientes, reservas, disponibilidades, pagamentos, bloqueios e relatórios da operação.
+Sistema de gestão para quadras esportivas com backend em Node.js/Express e frontend em React + Vite.
 
 ## Visão geral
 
-A aplicação foi pensada para facilitar a administração de uma quadra ou complexo esportivo, com foco em:
+O projeto foi pensado para facilitar a administração de quadras esportivas, permitindo:
 
 - cadastro e gestão de clientes
-- registro de reservas e disponibilidade
-- controle de quadras e horários
-- pagamentos e bloqueios
-- geração de relatórios operacionais
+- registro de reservas
+- controle de disponibilidade e horários
+- gestão de quadras e bloqueios
+- registros de pagamentos
+- geração de relatórios da operação
 
 ## Stack tecnológica
 
 - Backend: Node.js, Express, PostgreSQL
 - Frontend: React, Vite, Bootstrap
 - Comunicação: Axios
-- Autenticação: não implementada nesta versão
+- Autenticação: estrutura inicial disponível, sem login real implementado
 
 ## Estrutura do projeto
 
@@ -42,15 +43,26 @@ quadra_gestao/
 │   ├── vite.config.js
 │   └── index.html
 ├── package.json
-└── README.md
+├── README.md
+└── .gitignore
 ```
 
-## Funcionalidades
+## Status atual
+
+O projeto já está funcionando em desenvolvimento:
+
+- backend inicia corretamente e conecta ao PostgreSQL
+- frontend compila e sobe via Vite sem erros de build
+- as rotas da API estão montadas em `backend/src/routers/index.js`
+- o módulo de autenticação foi inicializado para evitar erro de router vazio
+
+## Funcionalidades implementadas
 
 ### Backend
 
-Endpoints principais:
+Rotas principais:
 
+- `/api/auth`
 - `/api/clientes`
 - `/api/reservas`
 - `/api/quadras`
@@ -61,25 +73,42 @@ Endpoints principais:
 
 ### Frontend
 
-A interface do cliente inclui páginas para:
+Páginas da interface:
 
-- calendário de reservas
+- autenticação
 - cadastro de clientes
-- registro de novas reservas
-- visualização de reservas e clientes
-- gerenciamento de disponibilidade
+- nova reserva
+- listagem de reservas
+- calendário
+- painel principal/dashboard
 
 ## Pré-requisitos
 
 Antes de iniciar, certifique-se de ter instalado:
 
 - Node.js 18+
-- npm ou yarn
+- npm
 - PostgreSQL
 
-## Configuração do banco de dados
+## Configuração do banco
 
-O backend está configurado para conectar a um banco PostgreSQL local com as seguintes configurações:
+O backend usa `pg` para conectar ao PostgreSQL. A configuração aceita variáveis de ambiente e também possui valores padrão para facilitar o desenvolvimento local.
+
+Arquivo responsável:
+
+- `backend/src/config/database.js`
+
+Exemplo de variáveis esperadas:
+
+```env
+DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=quadra_gestao
+DB_PASSWORD=admin
+DB_PORT=5433
+```
+
+Se as variáveis não forem definidas, o sistema usa estes valores padrão:
 
 ```js
 user: 'postgres'
@@ -89,11 +118,7 @@ password: 'admin'
 port: 5433
 ```
 
-Arquivo responsável:
-
-- `backend/src/config/database.js`
-
-Crie o banco `quadra_gestao` no PostgreSQL e confirme que a conexão está funcionando antes de iniciar o servidor.
+Crie o banco `quadra_gestao` no PostgreSQL antes de subir o backend.
 
 ## Como executar
 
@@ -110,7 +135,7 @@ npm install
 npm start
 ```
 
-O servidor ficará disponível em:
+O backend ficará disponível em:
 
 ```text
 http://localhost:3000
@@ -123,13 +148,13 @@ cd ../frontend
 npm install
 ```
 
-### 4) Iniciar o frontend em modo de desenvolvimento
+### 4) Iniciar o frontend
 
 ```bash
-npm run dev
+npm run dev -- --host 0.0.0.0
 ```
 
-A aplicação frontend será aberta em uma porta local do Vite, normalmente:
+O frontend ficará disponível em:
 
 ```text
 http://localhost:5173
@@ -137,13 +162,14 @@ http://localhost:5173
 
 ## Variáveis e ambiente
 
-Atualmente, a configuração do banco está hardcoded no projeto. Se futuramente forem adicionados arquivos `.env`, a recomendação é centralizar as credenciais e a porta em variáveis de ambiente para evitar dados fixos no código.
+A aplicação foi ajustada para suportar `dotenv`, mas também mantém valores de fallback para desenvolvimento local. Isso reduz erros quando o arquivo `.env` ainda não foi criado.
 
 ## Observações
 
-- O arquivo `backend/server.js` inicia a aplicação e tenta conectar ao PostgreSQL antes de subir o servidor.
-- A estrutura segue arquitetura em camadas, com controllers, services, repositories e routers.
-- O aplicativo ainda pode estar em evolução e pode exigir ajustes adicionais para ambiente de produção.
+- o arquivo `backend/server.js` inicia a aplicação e tenta conectar ao PostgreSQL antes de levantar o servidor
+- o Express usa `app.use('/api', routers)` para centralizar as rotas da aplicação
+- o frontend foi validado com build de produção com sucesso
+- o projeto ainda está em evolução e pode receber ajustes adicionais em regras de negócio e autenticação
 
 ## Licença
 
